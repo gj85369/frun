@@ -16,6 +16,7 @@ def main(argsin):
         try:
             singrun = prepare_runner(tdname)
             singrun.runner()
+            print(noway)
         except Exception as e:
             print(f'Error {e}')
         

@@ -50,10 +50,10 @@ if __name__ == '__main__':
                         required=True,
                         type=Path)
     args = parser.parse_args()
+    if not args.ligand:
+        print('ligand msas needed')
+        quit()
     if args.nanobody:
-        if len(args.ligand) == 0:
-            print('msa needed')
-            quit()
         if len(args.ligand) > 1:
             print('only 1 input msa for nanobodies')
             quit()

@@ -33,6 +33,7 @@ class prepare_runner:
         self.workdir = workdir
         
     def runner(self):
+        os.chdir(self.workdir)
         print(os.getcwd())
         
     

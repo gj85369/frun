@@ -7,7 +7,7 @@ Created on Tue Mar 31 10:32:55 2026
 """
 import argparse
 
-import Path
+from pathlib import Path
 
 def main(argsin):
     pass

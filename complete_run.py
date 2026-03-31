@@ -14,7 +14,7 @@ def main(argsin):
     with tempfile.TemporaryDirectory() as tdname:
         
         try:
-            singrun = prepare_runner(tdname)
+            singrun = prepare_runner(tdname, argsin)
             singrun.runner()
         except Exception as e:
             print(f'Error {e}')

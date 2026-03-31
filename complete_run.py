@@ -34,22 +34,11 @@ if __name__ == '__main__':
                         help="Receptor msa",
                         required=True,                        
                         type=Path)
-    parser.add_argument("-h",
-                        "--heavy",
-                        help="Heavy chain msa",
-                        type=Path)  
     parser.add_argument("-l",
-                        "--light",
-                        help="Light chain msa",
+                        "--ligand",
+                        help="ligand msa",
+                        action='append',
                         type=Path)    
-    parser.add_argument("-s",
-                        "--single",
-                        help="Nanobody msa",
-                        type=Path)    
-    parser.add_argument("-m",
-                        "--msa-dir",
-                        help="MSA dir that stores msas.",
-                        type=Path)
     parser.add_argument("-c",
                         "--complex",
                         help="The input complex",
@@ -62,21 +51,18 @@ if __name__ == '__main__':
                         type=Path)
     args = parser.parse_args()
     if args.nanobody:
-        iss = 0
-        if args.light:
-            print('please only use the single option for msa input')
-            iss += 1
-        if args.heavy:
-            print('please only use the single option for msa input')    
-            iss += 1
-        
-        if not args.single:
-            print('Single msa require for nanobody')    
-            iss += 1
-        
-        if iss > 0:
+        if len(args.ligand) == 0:
+            print('msa needed')
             quit()
-        
+        if len(args.ligand) > 1:
+            print('only 1 input msa for nanobodies')
+            quit()
+
+    else:
+        if len(args.ligand) != 2:
+            print('2 msas needed for antibodies')
+            quit()        
+    
             
         
     main(args)

@@ -16,12 +16,11 @@ def main(argsin):
         try:
             singrun = prepare_runner(tdname)
             singrun.runner()
-            print(noway)
         except Exception as e:
             print(f'Error {e}')
         
     
-
+import subprocess
 
 
 class cleanup:
@@ -30,11 +29,31 @@ class cleanup:
     
 
 class prepare_runner:
-    def __init__(self, workdir):
+    def __init__(self, workdir, argsp):
         self.workdir = workdir
+        self.argsp = argsp
+        
+    def make_ind_fasta(a3m_path, oname, faspas):
+        cmd = f'echo ">{oname}" > {faspas}'
+        subprocess.run(cmd, shell=True)
+        cmd = f'head -n 2 {a3m_path} | tail -n 1 >> {faspas}'
+        subprocess.run(cmd, shell=True)
+        cmd = f'cat {faspas}'
+        subprocess.run(cmd, shell=True)
+        cmd = f'ls -ltr {faspas}'
+        subprocess.run(cmd, shell=True)        
+    def make_fastas(self):
+        self.make_ind_fasta(self.argsp.receptor, 'rec', f'{self.workdir}/fasta/rec.fasta')
+        
+        for i in range(0, len(self.argsp.ligand)):
+            self.make_ind_fasta(self.argsp.ligand[i], f'lig_{i}', f'{self.workdir}/fasta/lig_{i}.fasta')
+            
         
     def runner(self):
-        os.chdir(self.workdir)
+        os.makedirs(f'{self.workdir}/msa')
+        os.makedirs(f'{self.workdir}/ligand')
+        os.makedirs(f'{self.workdir}/fasta')
+        self.make_fastas()
         print(os.getcwd())
         
     

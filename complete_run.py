@@ -6,10 +6,13 @@ Created on Tue Mar 31 10:32:55 2026
 @author: g4code
 """
 import argparse
-
+import os
 from pathlib import Path
 
 def main(argsin):
+    outdir = f'{argsin.output_dir}/tempdir'
+    os.makedirs(outdir, exist_ok=True)
+    os.makedirs(f'{outdir}/msa', exist_ok=True)
     pass
 
 

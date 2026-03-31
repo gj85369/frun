@@ -33,7 +33,7 @@ class prepare_runner:
         self.workdir = workdir
         self.argsp = argsp
         
-    def make_ind_fasta(a3m_path, oname, faspas):
+    def make_ind_fasta(self, a3m_path, oname, faspas):
         cmd = f'echo ">{oname}" > {faspas}'
         subprocess.run(cmd, shell=True)
         cmd = f'head -n 2 {a3m_path} | tail -n 1 >> {faspas}'

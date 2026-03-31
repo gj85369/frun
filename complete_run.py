@@ -7,13 +7,19 @@ Created on Tue Mar 31 10:32:55 2026
 """
 import argparse
 import os
+import tempfile
 from pathlib import Path
 
 def main(argsin):
-    outdir = f'{argsin.output_dir}/tempdir'
-    os.makedirs(outdir, exist_ok=True)
-    os.makedirs(f'{outdir}/msa', exist_ok=True)
-    pass
+    with tempfile.TemporaryDirectory() as tdname:
+        
+        try:
+            singrun = prepare_runner(tdname)
+            singrun.runner()
+        except Exception as e:
+            print(f'Error {e}')
+        
+    
 
 
 
@@ -23,8 +29,12 @@ class cleanup:
     
 
 class prepare_runner:
-    def __init__(self, *args, **kwargs):
-        pass
+    def __init__(self, workdir):
+        self.workdir = workdir
+        
+    def runner(self):
+        print(os.getcwd())
+        
     
 
 

@@ -10,6 +10,7 @@ import os
 import tempfile
 from pathlib import Path
 from protein_parser import protein, parse_line
+from complex_cut import complex_cut
 anarci = '/workspace/colabfold/localcolabfold/v1.5.5_old_installers/localcolabfold/colabfold-conda/bin/ANARCI'
 
 def main(argsin):
@@ -93,8 +94,7 @@ class prepare_runner:
             
         
     def parse_complex(self):
-        incomplex = protein(self.argsp.complex)
-        print(incomplex.fas_seq)
+        incomplex = complex_cut(self.argsp, self.argsp.output_dir)
             
         
     def runner(self):

@@ -148,14 +148,17 @@ class prepare_runner:
         os.makedirs(f'{self.workdir}/ligand', exist_ok=True)
         os.makedirs(f'{self.workdir}/fasta', exist_ok=True)
         os.makedirs(f'{self.workdir}/pdbs', exist_ok=True)
-        
+        print('processing inputs')
         self.make_fastas()
         self.parse_complex()
         self.compare_fastas()
+        print('modifying inputs')
         self.make_new_msas()
         self.run_interaction()
+        print('running af')
         self.run_af()
-        
+        print('cleaning')
+        self.run_cleaning()
     
 
 

@@ -98,9 +98,10 @@ class prepare_runner:
             
         
     def runner(self):
-        os.makedirs(f'{self.workdir}/msa')
-        os.makedirs(f'{self.workdir}/ligand')
-        os.makedirs(f'{self.workdir}/fasta')
+        os.makedirs(self.argsp.output_dir, exist_ok=True)
+        os.makedirs(f'{self.workdir}/msa', exist_ok=True)
+        os.makedirs(f'{self.workdir}/ligand', exist_ok=True)
+        os.makedirs(f'{self.workdir}/fasta', exist_ok=True)
         self.make_fastas()
         print(os.getcwd())
         self.parse_complex()

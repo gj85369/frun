@@ -9,7 +9,7 @@ Created on Tue Mar 31 22:59:23 2026
 from protein_parser import protein
 
 from ab_det import check_antibody
-
+from protein_parser import parse_line
 class complex_cut:
     def __init__(self, argsin, pdb_out_dir):
         self.argsin = argsin
@@ -21,14 +21,25 @@ class complex_cut:
     
     def parse_complex(self):
         self.prot = protein(self.argsin.complex)
+        rint = 0
+        rch = "ABCD"
+        self.chdic = {}
         for inst in list(self.prot.fas_seq.keys()):
             self.fas_dic[inst] = ''.join(self.prot.fas_seq[inst])
             res = check_antibody(self.fas_dic[inst])
             if res[0] == True:
                 self.ligand_chains.append(inst)
+                self.chdic[inst] = res[1]
             else:
                 self.receptor_chains.append(inst)
-        
+                self.chdic[inst] = rch[rint]
+                rint +=1
+
+
+    def rename_chain(self, inline):
+        tp = parse_line(inline)
+        retline = inline[:21] + self.chdic[tp['chain_name']] + inline[22:]
+        return retline
             
     def make_pdbs(self):
         self.ligpdb = f'{self.pdb_out_dir}/lig.pdb'
@@ -38,9 +49,9 @@ class complex_cut:
         for i in range(0,len(self.prot.base_lines)):
             if 'chainname' in list(self.prot.file_lines[i].keys()):
                 if self.prot.file_lines[i]['chainname'] in self.receptor_chains:
-                    rec_file.write(self.prot.base_lines[i])
+                    rec_file.write(self.rename_chain(self.prot.base_lines[i]))
                 else:
-                    lig_file.write(self.prot.base_lines[i])
+                    lig_file.write(self.rename_chain(self.prot.base_lines[i]))
         lig_file.close()
         rec_file.close()
     

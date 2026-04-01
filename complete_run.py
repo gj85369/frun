@@ -13,6 +13,7 @@ from complex_cut import complex_cut
 from sequence_similarity import needleman_wunsch
 from ab_det import check_antibody
 from comparing_fastas import compare
+import shutil
 
 def main(argsin):
     # with tempfile.TemporaryDirectory() as tdname:
@@ -97,6 +98,18 @@ class prepare_runner:
 
     def compare_fastas(self):
         tcomp = compare(self.incomplex, self.lig_dic, self.rec_dic)
+        self.lig_dic = tcomp.tlig_dic
+        self.rec_dic = tcomp.trec_dic
+    
+    
+    def make_new_msas(self):
+        for inst in list(self.lig_dic.keys()):
+            os.makedirs(f'{self.workdir}/msa/new_{self.lig_dic[inst]["chain_name"]}/mmseqs', exist_ok=True)
+            shutil.copyfile(self.lig_dic[inst]['ofasta'], f'{self.workdir}/msa/new_{self.lig_dic[inst]["chain_name"]}/mmseqs/aggregated.a3m')
+        for inst in list(self.rec_dic.keys()):
+            os.makedirs(f'{self.workdir}/msa/new_{self.rec_dic[inst]["chain_name"]}/mmseqs', exist_ok=True)
+            shutil.copyfile(self.rec_dic[inst]['ofasta'], f'{self.workdir}/msa/new_{self.rec_dic[inst]["chain_name"]}/mmseqs/aggregated.a3m')
+                        
 
         
     def runner(self):

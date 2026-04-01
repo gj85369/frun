@@ -36,14 +36,17 @@ class compare:
             for sinst in list(self.trec_dic.keys()):
                 compo[f'{inst}_r{sinst}'] = self.parse_ned_out(needleman_wunsch(self.tincomplex.fas_dic[inst], read_fasta(self.trec_dic[sinst]['nfasta'])))            
                 ccomp[inst].append(compo[f'{inst}_r{sinst}'])
-                
+        dones = []
         for inst in list(compo.keys()):
             cn, fn = inst.split('_')
-            if compo[inst] == min(ccomp[cn]):
-                if fn[0] == 'r':
-                    self.trec_dic[int(fn[1])]['chainname'] = cn
-                if fn[0] == 'l':
-                    self.tlig_dic[int(fn[1])]['chainname'] = cn                    
+            if inst not in dones:
+                if compo[inst] == min(ccomp[cn]):
+                    if fn[0] == 'r':
+                        self.trec_dic[int(fn[1])]['chain_name'] = cn
+                        dones.append(inst)
+                    if fn[0] == 'l':
+                        self.tlig_dic[int(fn[1])]['chain_name'] = cn 
+                        dones.append(inst)
         print(compo)    
         print(ccomp)
         print(self.tlig_dic)

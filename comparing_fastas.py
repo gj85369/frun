@@ -28,13 +28,13 @@ class compare:
     def compare_fastas(self):
         compo = {}
         ccomp = {}
-        for inst in list(self.tincomplex.fas_dic.keys()):
+        for inst in list(self.tincomplex.nfas_dic.keys()):
             ccomp[inst] = []
             for sinst in list(self.tlig_dic.keys()):
-                compo[f'{inst}_l{sinst}'] = self.parse_ned_out(needleman_wunsch(self.tincomplex.fas_dic[inst], read_fasta(self.tlig_dic[sinst]['nfasta'])))
+                compo[f'{inst}_l{sinst}'] = self.parse_ned_out(needleman_wunsch(self.tincomplex.nfas_dic[inst], read_fasta(self.tlig_dic[sinst]['nfasta'])))
                 ccomp[inst].append(compo[f'{inst}_l{sinst}'])
             for sinst in list(self.trec_dic.keys()):
-                compo[f'{inst}_r{sinst}'] = self.parse_ned_out(needleman_wunsch(self.tincomplex.fas_dic[inst], read_fasta(self.trec_dic[sinst]['nfasta'])))            
+                compo[f'{inst}_r{sinst}'] = self.parse_ned_out(needleman_wunsch(self.tincomplex.nfas_dic[inst], read_fasta(self.trec_dic[sinst]['nfasta'])))            
                 ccomp[inst].append(compo[f'{inst}_r{sinst}'])
         dones = []
         for inst in list(compo.keys()):

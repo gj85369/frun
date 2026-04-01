@@ -17,6 +17,7 @@ class complex_cut:
         self.fas_dic = {}
         self.receptor_chains = []
         self.ligand_chains = []
+        self.nfas_dic = {}
         self.runner()
     
     def parse_complex(self):
@@ -30,9 +31,11 @@ class complex_cut:
             if res[0] == True:
                 self.ligand_chains.append(inst)
                 self.chdic[inst] = res[1]
+                self.nfas_dic[res[1]] = ''.join(self.prot.fas_seq[inst])
             else:
                 self.receptor_chains.append(inst)
                 self.chdic[inst] = rch[rint]
+                self.nfas_dic[rch[rint]] = ''.join(self.prot.fas_seq[inst])
                 rint +=1
 
 

@@ -35,7 +35,7 @@ class compare:
                 ccomp[inst].append(compo[f'{inst}_l{sinst}'])
             for sinst in list(self.trec_dic.keys()):
                 compo[f'{inst}_r{sinst}'] = self.parse_ned_out(needleman_wunsch(self.tincomplex.fas_dic[inst], read_fasta(self.trec_dic[sinst]['nfasta'])))            
-                compo[f'{inst}_r{sinst}']
+                ccomp[inst].append(compo[f'{inst}_r{sinst}'])
         print(compo)    
         print(ccomp)
         

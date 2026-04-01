@@ -53,10 +53,10 @@ class prepare_runner:
         subprocess.run(cmd, shell=True)
         cmd = f'head -n 2 {a3m_path} | tail -n 1 >> {faspas}'
         subprocess.run(cmd, shell=True)
-        cmd = f'cat {faspas}'
-        subprocess.run(cmd, shell=True)
-        cmd = f'ls -ltr {faspas}'
-        subprocess.run(cmd, shell=True)        
+        #cmd = f'cat {faspas}'
+        #subprocess.run(cmd, shell=True)
+        #cmd = f'ls -ltr {faspas}'
+        #subprocess.run(cmd, shell=True)        
     def make_fastas(self):
         
         ###   THIS NEEDS TO CHANGE - run parse complex first then assign chain names after, then move msas

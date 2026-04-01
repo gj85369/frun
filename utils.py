@@ -10,6 +10,13 @@ Created on Wed Apr  1 09:31:58 2026
 from protein_parser import parse_line, d
 from sequence_similarity import needleman_wunsch
 
+def read_fasta(infas):
+    with open(infas, 'r') as f:
+        for line in f:
+            if line[0] != '>':
+                return line
+    f.close()
+
 def write_rules(inlist, exlist, fobj, keylist, inseqdic, outseqdic, totseqdic):
     curchain = None
     startnum = {}

@@ -121,6 +121,6 @@ class protein:
                         self.fas_seq[inst['chainname']] = []
 
                     self.resdic[f"{inst['resnum']}_{inst['chainname']}_{inst['insres']}"] = []
-                    
+                    self.fas_seq[inst['chainname']].append(d[inst['resname']])
                 self.resdic[f"{inst['resnum']}_{inst['chainname']}_{inst['insres']}"].append(inst)
         

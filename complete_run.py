@@ -94,8 +94,7 @@ class prepare_runner:
         
     def parse_complex(self):
         incomplex = protein(self.argsp.complex)
-        print(incomplex.__dict__)
-        #print(incomplex.fas_seq)
+        print(incomplex.fas_seq)
             
         
     def runner(self):

@@ -7,7 +7,7 @@ Created on Tue Mar 31 10:32:55 2026
 """
 import argparse
 import os
-import tempfile
+import tempfile, subprocess
 from pathlib import Path
 from complex_cut import complex_cut
 from sequence_similarity import needleman_wunsch
@@ -16,6 +16,8 @@ from comparing_fastas import compare
 import shutil
 from interaction import interact
 from json_make import making_json
+bpath = Path(__file__).parent.resolve()
+
 def main(argsin):
     # with tempfile.TemporaryDirectory() as tdname:
         
@@ -134,6 +136,10 @@ class prepare_runner:
                     f'{self.workdir}/newrun/af_run/job.json', 
                     nme='modded')
         
+    def run_af(self):
+        os.chdir(f'{self.workdir}/newrun')
+        cmd = f'bash {bpath}/runit'
+        subprocess.check_call(cmd.split())
     def runner(self):
         os.makedirs(self.argsp.output_dir, exist_ok=True)
         os.makedirs(f'{self.workdir}/msa', exist_ok=True)
@@ -146,6 +152,7 @@ class prepare_runner:
         self.compare_fastas()
         self.make_new_msas()
         self.run_interaction()
+        self.run_af()
         
     
 

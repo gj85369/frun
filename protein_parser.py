@@ -93,6 +93,7 @@ class protein:
         self.filename = filename
         self.residues = []
         self.seq = {}
+        self.fas_seq = {}        
         self.outseq = {}
         self.totseq = {}
         self.file_lines = []
@@ -100,7 +101,6 @@ class protein:
         self.resdic = {}
         self.read_file()
         self.split_res()
-        self.fas_seq = {}
         
     
     def read_file(self):

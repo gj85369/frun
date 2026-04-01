@@ -89,7 +89,8 @@ class prepare_runner:
             
         
     def parse_complex(self):
-        incomplex = complex_cut(self.argsp, self.argsp.output_dir)
+        incomplex = complex_cut(self.argsp, f'{self.workdir}/pdbs')
+        print(incomplex.fas_dic)
             
         
     def runner(self):
@@ -97,6 +98,8 @@ class prepare_runner:
         os.makedirs(f'{self.workdir}/msa', exist_ok=True)
         os.makedirs(f'{self.workdir}/ligand', exist_ok=True)
         os.makedirs(f'{self.workdir}/fasta', exist_ok=True)
+        os.makedirs(f'{self.workdir}/pdbs', exist_ok=True)
+        
         self.make_fastas()
         print(os.getcwd())
         self.parse_complex()

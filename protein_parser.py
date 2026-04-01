@@ -119,8 +119,12 @@ class protein:
                         self.outseq[inst['chainname']] = []
                         self.totseq[inst['chainname']] = []
                         self.fas_seq[inst['chainname']] = []
+                    
+                    print(inst['insres'])
+                    if len(inst['insres']) > 0:
+                        self.fas_seq[inst['chainname']].append(d[inst['insres']])
                         
                     self.resdic[f"{inst['resnum']}_{inst['chainname']}_{inst['insres']}"] = []
-                    self.fas_seq[inst['chainname']].append(d[inst['insres']])
+                    
                 self.resdic[f"{inst['resnum']}_{inst['chainname']}_{inst['insres']}"].append(inst)
         

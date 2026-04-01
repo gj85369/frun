@@ -99,14 +99,24 @@ class prepare_runner:
     def parse_complex(self):
         self.incomplex = complex_cut(self.argsp, f'{self.workdir}/pdbs')
         
+
+    def parse_ned_out(self, ndout):
+        ct = 0
+        for inst in ndout:
+            if None in inst:
+                ct +=1
+        return ct
+
+
+        
     def compare_fastas(self):
         compo = {}
         
         for inst in list(self.incomplex.fas_dic.keys()):
             for sinst in list(self.lig_dic.keys()):
-                compo[f'{inst}_l{sinst}'] = needleman_wunsch(self.incomplex.fas_dic[inst], read_fasta(self.lig_dic[sinst]['nfasta']))
+                compo[f'{inst}_l{sinst}'] = self.parse_ned_out(needleman_wunsch(self.incomplex.fas_dic[inst], read_fasta(self.lig_dic[sinst]['nfasta'])))
             for sinst in list(self.rec_dic.keys()):
-                compo[f'{inst}_r{sinst}'] = needleman_wunsch(self.incomplex.fas_dic[inst], read_fasta(self.rec_dic[sinst]['nfasta']))            
+                compo[f'{inst}_r{sinst}'] = self.parse_ned_out(needleman_wunsch(self.incomplex.fas_dic[inst], read_fasta(self.rec_dic[sinst]['nfasta'])))            
         print(compo)
         
     def runner(self):

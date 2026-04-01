@@ -87,7 +87,7 @@ class prepare_runner:
                 print(f'ligand is supposed to be antibody {self.argsp.ligand[i]} does not match antibody')
                 quit()
             else:
-                print(f'{self.argsp.ligand[i]} is an antibody chain {opt[1]}')
+                #print(f'{self.argsp.ligand[i]} is an antibody chain {opt[1]}')
                 self.lig_dic[i]['chain_name'] = None
             
 

@@ -29,6 +29,6 @@ class cleaning:
         for inst in a3ms:
             alist = inst.split('/')
             
-            shutil.copy(inst, f'{self.argsin.output_dir}/{alist[-2]}_{alist[-1]}')
+            shutil.copy(inst, f'{self.argsin.output_dir}/{alist[-3]}_{alist[-1]}')
             
         

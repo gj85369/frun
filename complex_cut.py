@@ -38,7 +38,7 @@ class complex_cut:
 
     def rename_chain(self, inline):
         tp = parse_line(inline)
-        retline = inline[:21] + self.chdic[tp['chain_name']] + inline[22:]
+        retline = inline[:21] + self.chdic[tp['chainname']] + inline[22:]
         return retline
             
     def make_pdbs(self):

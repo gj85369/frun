@@ -123,6 +123,7 @@ class prepare_runner:
         print(os.getcwd())
         self.parse_complex()
         self.compare_fastas()
+        self.make_new_msas()
         
     
 

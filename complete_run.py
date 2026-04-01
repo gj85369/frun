@@ -103,6 +103,7 @@ class prepare_runner:
         os.makedirs(f'{self.workdir}/fasta')
         self.make_fastas()
         print(os.getcwd())
+        self.parse_complex()
         
     
 

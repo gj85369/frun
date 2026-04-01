@@ -10,6 +10,7 @@ import os
 import tempfile
 from pathlib import Path
 from complex_cut import complex_cut
+from sequence_similarity import needleman_wunsch
 from ab_det import check_antibody
 def main(argsin):
     # with tempfile.TemporaryDirectory() as tdname:
@@ -67,7 +68,7 @@ class prepare_runner:
             self.rec_dic[i] = {}
             self.rec_dic[i]['nfasta'] = f'{self.workdir}/fasta/rec_{i}.fasta'
             self.rec_dic[i]['ofasta'] = self.argsp.receptor[i]    
-            self.rec_dic[i]['chain_name'] = rch[i]
+            self.rec_dic[i]['chain_name'] = None
             
         self.lig_dic = {}
         for i in range(0, len(self.argsp.ligand)):
@@ -82,16 +83,24 @@ class prepare_runner:
                 quit()
             else:
                 print(f'{self.argsp.ligand[i]} is an antibody chain {opt[1]}')
-                self.lig_dic[i]['chain_name'] = opt[1]
+                self.lig_dic[i]['chain_name'] = None
             
             print(self.lig_dic)
             print(self.rec_dic)
             
         
     def parse_complex(self):
-        incomplex = complex_cut(self.argsp, f'{self.workdir}/pdbs')
-        print(incomplex.fas_dic)
-            
+        self.incomplex = complex_cut(self.argsp, f'{self.workdir}/pdbs')
+        
+    def compare_fastas(self):
+        compo = {}
+        
+        for inst in list(self.incomplex.fas_dic.keys()):
+            for sinst in list(self.lig_dic.keys()):
+                compo[f'{inst}_l{sinst}'] = needleman_wunsch(self.incomplex.fas_dic[inst], self.lig_dic[sinst])
+            for sinst in list(self.rec_dic.keys()):
+                compo[f'{inst}_r{sinst}'] = needleman_wunsch(self.incomplex.fas_dic[inst], self.rec_dic[sinst])            
+        print(compo)
         
     def runner(self):
         os.makedirs(self.argsp.output_dir, exist_ok=True)
@@ -103,6 +112,7 @@ class prepare_runner:
         self.make_fastas()
         print(os.getcwd())
         self.parse_complex()
+        self.compare_fastas()
         
     
 

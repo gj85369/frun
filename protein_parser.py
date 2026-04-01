@@ -120,7 +120,7 @@ class protein:
                         self.totseq[inst['chainname']] = []
                         self.fas_seq[inst['chainname']] = []
                     
-                    print(inst['insres'])
+                    print(inst)
                     if len(inst['insres']) > 0:
                         self.fas_seq[inst['chainname']].append(d[inst['insres']])
                         

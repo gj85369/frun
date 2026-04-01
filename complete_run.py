@@ -14,7 +14,8 @@ from sequence_similarity import needleman_wunsch
 from ab_det import check_antibody
 from comparing_fastas import compare
 import shutil
-
+from interaction import interact
+from json_make import making_json
 def main(argsin):
     # with tempfile.TemporaryDirectory() as tdname:
         
@@ -111,6 +112,27 @@ class prepare_runner:
             shutil.copyfile(self.rec_dic[inst]['ofasta'], f'{self.workdir}/msa/new_{self.rec_dic[inst]["chain_name"]}/mmseqs/aggregated.a3m')
                         
 
+    def run_interaction(self):
+        os.makedirs(f'{self.workdir}/newrun')
+        os.makedirs(f'{self.workdir}/newrun/processed_templates')
+        os.makedirs(f'{self.workdir}/newrun/processed_msas')
+        os.makedirs(f'{self.workdir}/newrun/af_run')
+        
+        intout = interact(self.incomplex.recpdb, 
+                          self.incomplex.ligpdb, 
+                          f'{self.workdir}/newrun/processed_templates/temp.pdb', 
+                          f'{self.workdir}/msa', 
+                          f'{self.workdir}/newrun/processed_msas',
+                          name='new', 
+                          outname='modded')
+        seq_dic = {}
+        for inst in list(intout.msa_dic.keys()):
+            seq_dic[inst] = intout.msa_dic[inst]['msa_seq']
+        making_json(seq_dic, 
+                    f'{self.workdir}/newrun/processed_msas', 
+                    f'{self.workdir}/newrun/processed_templates/temp.pdb', 
+                    f'{self.workdir}/newrun/af_run/job.json', 
+                    nme='modded')
         
     def runner(self):
         os.makedirs(self.argsp.output_dir, exist_ok=True)
@@ -120,10 +142,10 @@ class prepare_runner:
         os.makedirs(f'{self.workdir}/pdbs', exist_ok=True)
         
         self.make_fastas()
-        print(os.getcwd())
         self.parse_complex()
         self.compare_fastas()
         self.make_new_msas()
+        self.run_interaction()
         
     
 

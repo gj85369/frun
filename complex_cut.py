@@ -31,6 +31,8 @@ class complex_cut:
         
             
     def make_pdbs(self):
+        self.ligpdb = f'{self.pdb_out_dir}/lig.pdb'
+        self.recpdb = f'{self.pdb_out_dir}/rec.pdb'
         lig_file = open(f'{self.pdb_out_dir}/lig.pdb', 'w')
         rec_file = open(f'{self.pdb_out_dir}/rec.pdb', 'w')
         for i in range(0,len(self.prot.base_lines)):

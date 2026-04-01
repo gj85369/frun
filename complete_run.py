@@ -12,6 +12,13 @@ from pathlib import Path
 from complex_cut import complex_cut
 from sequence_similarity import needleman_wunsch
 from ab_det import check_antibody
+
+def read_fasta(infas):
+    with open(infas, 'r') as f:
+        for line in f:
+            if line[0] != '>':
+                return line
+    f.close()
 def main(argsin):
     # with tempfile.TemporaryDirectory() as tdname:
         
@@ -97,9 +104,9 @@ class prepare_runner:
         
         for inst in list(self.incomplex.fas_dic.keys()):
             for sinst in list(self.lig_dic.keys()):
-                compo[f'{inst}_l{sinst}'] = needleman_wunsch(self.incomplex.fas_dic[inst], self.lig_dic[sinst])
+                compo[f'{inst}_l{sinst}'] = needleman_wunsch(self.incomplex.fas_dic[inst], read_fasta(self.lig_dic[sinst]['nfasta']))
             for sinst in list(self.rec_dic.keys()):
-                compo[f'{inst}_r{sinst}'] = needleman_wunsch(self.incomplex.fas_dic[inst], self.rec_dic[sinst])            
+                compo[f'{inst}_r{sinst}'] = needleman_wunsch(self.incomplex.fas_dic[inst], read_fasta(self.rec_dic[sinst]['nfasta']))            
         print(compo)
         
     def runner(self):

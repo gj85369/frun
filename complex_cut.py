@@ -6,9 +6,8 @@ Created on Tue Mar 31 22:59:23 2026
 @author: g4code
 """
 
-from protein_parser import protein, parse_line
+from protein_parser import protein
 
-anarci = '/workspace/colabfold/localcolabfold/v1.5.5_old_installers/localcolabfold/colabfold-conda/bin/ANARCI'
 from ab_det import check_antibody
 
 class complex_cut:

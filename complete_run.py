@@ -9,34 +9,27 @@ import argparse
 import os
 import tempfile
 from pathlib import Path
-from protein_parser import protein, parse_line
 from complex_cut import complex_cut
-anarci = '/workspace/colabfold/localcolabfold/v1.5.5_old_installers/localcolabfold/colabfold-conda/bin/ANARCI'
-
+from ab_det import check_antibody
 def main(argsin):
-    with tempfile.TemporaryDirectory() as tdname:
+    # with tempfile.TemporaryDirectory() as tdname:
         
-        try:
-            singrun = prepare_runner(tdname, argsin)
-            singrun.runner()
-        except Exception as e:
-            print(f'Error {e}')
-        
+    #     try:
+    #         singrun = prepare_runner(tdname, argsin)
+    #         singrun.runner()
+    #     except Exception as e:
+    #         print(f'Error {e}')
+    tdname = f'{os.getcwd()}/funny'
+    os.makedirs(tdname, exist_ok=True)
+    try:
+        singrun = prepare_runner(tdname, argsin)
+        singrun.runner()
+    except Exception as e:
+        print(f'Error {e}')       
     
 import subprocess
 
-def check_antibody(fasta_in):
-    cmd = [anarci, '-i', fasta_in]
-    out = subprocess.check_output(cmd, universal_newlines=True)
-    if len(out.split("\n")) > 20:
-        chn = []
-        for inst in out.split("\n"):
-            if len(inst) > 0:
-                
-                chn.append(inst[0])
-        return [True, max(chn)]
-    else:
-        return [False]
+
     
 class cleanup:
     def __init__(self, *args, **kwargs):
@@ -58,6 +51,8 @@ class prepare_runner:
         cmd = f'ls -ltr {faspas}'
         subprocess.run(cmd, shell=True)        
     def make_fastas(self):
+        
+        ###   THIS NEEDS TO CHANGE - run parse complex first then assign chain names after, then move msas
         #self.make_ind_fasta(self.argsp.receptor, 'rec', f'{self.workdir}/fasta/rec.fasta')
         #self.rec_fasta = f'{self.workdir}/fasta/rec.fasta'
         self.rec_dic = {}

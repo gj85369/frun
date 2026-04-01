@@ -37,9 +37,9 @@ class complex_cut:
         for i in range(0,len(self.prot.base_lines)):
             if 'chainname' in list(self.prot.file_lines[i].keys()):
                 if self.prot.file_lines[i]['chainname'] in self.receptor_chains:
-                    rec_file.write(self.base_lines[i])
+                    rec_file.write(self.prot.base_lines[i])
                 else:
-                    lig_file.write(self.base_lines[i])
+                    lig_file.write(self.prot.base_lines[i])
         lig_file.close()
         rec_file.close()
     

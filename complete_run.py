@@ -9,6 +9,7 @@ import argparse
 import os
 import tempfile
 from pathlib import Path
+anarci = '/workspace/colabfold/localcolabfold/v1.5.5_old_installers/localcolabfold/colabfold-conda/bin/ANARCI'
 
 def main(argsin):
     with tempfile.TemporaryDirectory() as tdname:
@@ -22,7 +23,19 @@ def main(argsin):
     
 import subprocess
 
-
+def check_antibody(fasta_in):
+    cmd = [anarci, '-i', fasta_in]
+    out = subprocess.check_output(cmd, universal_newlines=True)
+    if len(out.split("\n")) > 20:
+        chn = []
+        for inst in out.split("\n"):
+            if len(inst) > 0:
+                
+                chn.append(inst[0])
+        return [True, max(chn)]
+    else:
+        return [False]
+    
 class cleanup:
     def __init__(self, *args, **kwargs):
         pass
@@ -43,10 +56,42 @@ class prepare_runner:
         cmd = f'ls -ltr {faspas}'
         subprocess.run(cmd, shell=True)        
     def make_fastas(self):
-        self.make_ind_fasta(self.argsp.receptor, 'rec', f'{self.workdir}/fasta/rec.fasta')
-        
+        #self.make_ind_fasta(self.argsp.receptor, 'rec', f'{self.workdir}/fasta/rec.fasta')
+        #self.rec_fasta = f'{self.workdir}/fasta/rec.fasta'
+        self.rec_dic = {}
+        if len(self.argsp.receptor) > 4:
+            print('receptor limit hard coded to 4 search this text to change')
+            quit()
+        rch = 'ABCD'
+
+        for i in range(0, len(self.argsp.receptor)):
+            
+            self.make_ind_fasta(self.argsp.receptor[i], f'rec_{i}', f'{self.workdir}/fasta/rec_{i}.fasta')
+            self.rec_dic[i] = {}
+            self.rec_dic[i]['nfasta'] = f'{self.workdir}/fasta/rec_{i}.fasta'
+            self.rec_dic[i]['ofasta'] = self.argsp.receptor[i]    
+            self.rec_dic[i]['chain_name'] = rch[i]
+            
+        self.lig_dic = {}
         for i in range(0, len(self.argsp.ligand)):
+            
             self.make_ind_fasta(self.argsp.ligand[i], f'lig_{i}', f'{self.workdir}/fasta/lig_{i}.fasta')
+            self.lig_dic[i] = {}
+            self.lig_dic[i]['nfasta'] = f'{self.workdir}/fasta/lig_{i}.fasta'
+            self.lig_dic[i]['ofasta'] = self.argsp.ligand[i]
+            opt = check_antibody(self.lig_dic[i]['nfasta'])
+            if opt[0] == False:
+                print(f'ligand is supposed to be antibody {self.argsp.ligand[i]} does not match antibody')
+                quit()
+            else:
+                print(f'{self.argsp.ligand[i]} is an antibody chain {opt[1]}')
+                self.lig_dic[i]['chain_name'] = opt[1]
+            
+            print(self.lig_dic)
+            print(self.rec_dic)
+            
+        
+
             
         
     def runner(self):
@@ -66,7 +111,8 @@ if __name__ == '__main__':
     parser.add_argument("-r",
                         "--receptor",
                         help="Receptor msa",
-                        required=True,                        
+                        required=True,  
+                        action='append',                        
                         type=Path)
     parser.add_argument("-l",
                         "--ligand",

@@ -16,6 +16,7 @@ from comparing_fastas import compare
 import shutil
 from interaction import interact
 from json_make import making_json
+from cleaning import cleaning
 bpath = Path(__file__).parent.resolve()
 
 def main(argsin):
@@ -34,7 +35,6 @@ def main(argsin):
     except Exception as e:
         print(f'Error {e}')       
     
-import subprocess
 
 
     
@@ -66,7 +66,6 @@ class prepare_runner:
         if len(self.argsp.receptor) > 4:
             print('receptor limit hard coded to 4 search this text to change')
             quit()
-        rch = 'ABCD'
 
         for i in range(0, len(self.argsp.receptor)):
             
@@ -91,8 +90,7 @@ class prepare_runner:
                 print(f'{self.argsp.ligand[i]} is an antibody chain {opt[1]}')
                 self.lig_dic[i]['chain_name'] = None
             
-            print(self.lig_dic)
-            print(self.rec_dic)
+
             
         
     def parse_complex(self):
@@ -140,6 +138,10 @@ class prepare_runner:
         os.chdir(f'{self.workdir}/newrun')
         cmd = f'bash {bpath}/runit'
         subprocess.check_call(cmd.split())
+        
+    def run_cleaning(self):
+        cln = cleaning(self.workdir, self.argsp)
+        
     def runner(self):
         os.makedirs(self.argsp.output_dir, exist_ok=True)
         os.makedirs(f'{self.workdir}/msa', exist_ok=True)

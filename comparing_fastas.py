@@ -47,8 +47,5 @@ class compare:
                     if fn[0] == 'l':
                         self.tlig_dic[int(fn[1])]['chain_name'] = cn 
                         dones.append(inst)
-        print(compo)    
-        print(ccomp)
-        print(self.tlig_dic)
-        print(self.trec_dic)
+
         

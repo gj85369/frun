@@ -19,6 +19,12 @@ from json_make import making_json
 from cleaning import cleaning
 bpath = Path(__file__).parent.resolve()
 
+
+
+def load_stuff():
+    pass
+
+
 def main(argsin):
     with tempfile.TemporaryDirectory() as tdname:
         

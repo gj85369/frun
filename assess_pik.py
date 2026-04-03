@@ -80,52 +80,40 @@ def get_dict_of_af2_data(pkl_path: Path, map_chain_to_idx: dict):
         
     for inst in list(ptm_outs.keys()):
         #tidx = map_chain_to_idx[inst]
-        ptm_outs[f'{inst}_ptms'] = []
-        ptm_outs[f'{inst}_iptms'] = []
-        ptm_outs[f'{inst}_multimer_confs'] = []
+        ptm_outs[inst][f'{inst}_ptms'] = []
+        ptm_outs[inst][f'{inst}_iptms'] = []
+        ptm_outs[inst][f'{inst}_multimer_confs'] = []
     
     for comb in all_combinations:
         if comb[0] in aindx:
             if comb[1] not in aindx:
-                ptm_outs[f'{rev_map[comb[0]]}_ptms'].append(data["interfaces"][comb]["ptm"].item())
-                ptm_outs[f'{rev_map[comb[0]]}_iptms'].append(data["interfaces"][comb]["iptm"].item())
-                ptm_outs[f'{rev_map[comb[0]]}_multimer_confs'].append(data["interfaces"][comb]["multimer_confidence"].item())
+                ptm_outs[rev_map[comb[0]]][f'{rev_map[comb[0]]}_ptms'].append(data["interfaces"][comb]["ptm"].item())
+                ptm_outs[rev_map[comb[0]]][f'{rev_map[comb[0]]}_iptms'].append(data["interfaces"][comb]["iptm"].item())
+                ptm_outs[rev_map[comb[0]]][f'{rev_map[comb[0]]}_multimer_confs'].append(data["interfaces"][comb]["multimer_confidence"].item())
     
     
     print(ptm_outs)
-    # h_idx = map_chain_to_idx["H"]
-    # l_idx = map_chain_to_idx["L"]
-    # h_ptms = []
-    # h_iptms = []
-    # h_multimer_confs = []
-    # l_ptms = []
-    # l_iptms = []
-    # l_multimer_confs = []
-    # for comb in all_combinations:
-    #     if (h_idx in comb) and (l_idx not in comb): # Hchain-antigen case
-    #         h_ptms.append(data["interfaces"][comb]["ptm"].item())
-    #         h_iptms.append(data["interfaces"][comb]["iptm"].item())
-    #         h_multimer_confs.append(data["interfaces"][comb]["multimer_confidence"].item())
-    #     if (l_idx in comb) and (h_idx not in comb): # Lchain-antigen case
-    #         l_ptms.append(data["interfaces"][comb]["ptm"].item())
-    #         l_iptms.append(data["interfaces"][comb]["iptm"].item())
-    #         l_multimer_confs.append(data["interfaces"][comb]["multimer_confidence"].item())
-
-    # # write all the data
-    # partial_data["filename"] = pkl_path.stem.split(".metrics")[0]
-    # partial_data["all_ptm"] = data["ptm"].item()
-    # partial_data["all_iptm"] = data["iptm"].item()
-    # partial_data["all_multimer_confidence"] = data["multimer_confidence"].item()
-    # partial_data["H_ptm"] = np.array(h_ptms).mean()
-    # partial_data["H_iptm"] = np.array(h_iptms).mean()
-    # partial_data["H_multimer_confidence"] = np.array(h_multimer_confs).mean()
-    # partial_data["L_ptm"] = np.array(l_ptms).mean()
-    # partial_data["L_iptm"] = np.array(l_iptms).mean()
-    # partial_data["L_multimer_confidence"] = np.array(l_multimer_confs).mean()
-    # partial_data["H-L_ptm"] = (partial_data["H_ptm"] + partial_data["L_ptm"])/2
-    # partial_data["H-L_iptm"] = (partial_data["H_iptm"] + partial_data["L_iptm"])/2
-    # partial_data["H-L_multimer_confidence"] = (partial_data["H_multimer_confidence"] + partial_data["L_multimer_confidence"])/2
-    # return partial_data
+    
+    partial_data["filename"] = pkl_path.stem.split(".metrics")[0]
+    partial_data["all_ptm"] = data["ptm"].item()
+    partial_data["all_iptm"] = data["iptm"].item()
+    partial_data["all_multimer_confidence"] = data["multimer_confidence"].item()    
+    
+    for inst in list(ptm_outs.keys()):
+        td = ptm_outs[inst]
+        partial_data[f"{inst}_ptm"] = np.array(td[f'{inst.lower()}_ptms']).mean()
+        partial_data[f"{inst}_iptm"] = np.array(td[f'{inst.lower()}_iptms']).mean()
+        partial_data[f"{inst}_multimer_confidence"] = np.array(td[f'{inst.lower()}_multimer_confs']).mean()
+    pch = list(ptm_outs.keys())
+    if len(pch) > 1:
+        
+        for i in range(1,len(list(pch))):
+            for j in range(0,i):
+                partial_data[f"{pch[i]}-{pch[j]}_ptm"] = (partial_data[f"{pch[i]}_ptm"] + partial_data[f"{pch[j]}_ptm"])/2
+                partial_data[f"{pch[i]}-{pch[j]}_iptm"] = (partial_data[f"{pch[i]}_iptm"] + partial_data[f"{pch[j]}_iptm"])/2
+                partial_data[f"{pch[i]}-{pch[j]}_multimer_confidence"] = (partial_data[f"{pch[i]}_multimer_confidence"] + partial_data[f"{pch[j]}_multimer_confidence"])/2
+    return partial_data
+                
 
 
 def mp_wrapper_get_dict_of_af2_data(args):

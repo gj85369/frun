@@ -83,15 +83,25 @@ def get_dict_of_af2_data(pkl_path: Path, map_chain_to_idx: dict):
         ptm_outs[inst][f'{inst}_ptms'] = []
         ptm_outs[inst][f'{inst}_iptms'] = []
         ptm_outs[inst][f'{inst}_multimer_confs'] = []
-    
+    ct = 0
     for comb in all_combinations:
         if comb[1] in aindx:
             if comb[0] not in aindx:
+                ct += 1
                 c0 = rev_map[comb[1]].lower()
                 ptm_outs[c0][f'{c0}_ptms'].append(data["interfaces"][comb]["ptm"].item())
                 ptm_outs[c0][f'{c0}_iptms'].append(data["interfaces"][comb]["iptm"].item())
                 ptm_outs[c0][f'{c0}_multimer_confs'].append(data["interfaces"][comb]["multimer_confidence"].item())
-    
+    if ct == 0:
+        for comb in all_combinations:
+            if comb[0] in aindx:
+                if comb[1] not in aindx:
+                    
+                    c0 = rev_map[comb[0]].lower()
+                    ptm_outs[c0][f'{c0}_ptms'].append(data["interfaces"][comb]["ptm"].item())
+                    ptm_outs[c0][f'{c0}_iptms'].append(data["interfaces"][comb]["iptm"].item())
+                    ptm_outs[c0][f'{c0}_multimer_confs'].append(data["interfaces"][comb]["multimer_confidence"].item())
+        
     
     print(ptm_outs)
     

@@ -72,7 +72,7 @@ def get_dict_of_af2_data(pkl_path: Path, map_chain_to_idx: dict):
         elif inst in ant_chains:
             aindx.append(map_chain_to_idx[inst])     
             rev_map[map_chain_to_idx[inst]] = inst   
-            ptm_outs[inst] = {}
+            ptm_outs[inst.lower()] = {}
         else:
             print(f'some thing has gone very wrong for chain {inst}')
             quit()
@@ -101,17 +101,17 @@ def get_dict_of_af2_data(pkl_path: Path, map_chain_to_idx: dict):
     
     for inst in list(ptm_outs.keys()):
         td = ptm_outs[inst]
-        partial_data[f"{inst}_ptm"] = np.array(td[f'{inst.lower()}_ptms']).mean()
-        partial_data[f"{inst}_iptm"] = np.array(td[f'{inst.lower()}_iptms']).mean()
-        partial_data[f"{inst}_multimer_confidence"] = np.array(td[f'{inst.lower()}_multimer_confs']).mean()
+        partial_data[f"{inst}_ptm"] = np.array(td[f'{inst}_ptms']).mean()
+        partial_data[f"{inst}_iptm"] = np.array(td[f'{inst}_iptms']).mean()
+        partial_data[f"{inst}_multimer_confidence"] = np.array(td[f'{inst}_multimer_confs']).mean()
     pch = list(ptm_outs.keys())
     if len(pch) > 1:
         
         for i in range(1,len(list(pch))):
             for j in range(0,i):
-                partial_data[f"{pch[i]}-{pch[j]}_ptm"] = (partial_data[f"{pch[i]}_ptm"] + partial_data[f"{pch[j]}_ptm"])/2
-                partial_data[f"{pch[i]}-{pch[j]}_iptm"] = (partial_data[f"{pch[i]}_iptm"] + partial_data[f"{pch[j]}_iptm"])/2
-                partial_data[f"{pch[i]}-{pch[j]}_multimer_confidence"] = (partial_data[f"{pch[i]}_multimer_confidence"] + partial_data[f"{pch[j]}_multimer_confidence"])/2
+                partial_data[f"{pch[i].upper()}-{pch[j].upper()}_ptm"] = (partial_data[f"{pch[i]}_ptm"] + partial_data[f"{pch[j]}_ptm"])/2
+                partial_data[f"{pch[i].upper()}-{pch[j].upper()}_iptm"] = (partial_data[f"{pch[i]}_iptm"] + partial_data[f"{pch[j]}_iptm"])/2
+                partial_data[f"{pch[i].upper()}-{pch[j].upper()}_multimer_confidence"] = (partial_data[f"{pch[i]}_multimer_confidence"] + partial_data[f"{pch[j]}_multimer_confidence"])/2
     return partial_data
                 
 

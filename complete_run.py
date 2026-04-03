@@ -26,20 +26,20 @@ def load_stuff():
 
 
 def main(argsin):
-    with tempfile.TemporaryDirectory() as tdname:
+    # with tempfile.TemporaryDirectory() as tdname:
         
-        try:
-            singrun = prepare_runner(tdname, argsin)
-            singrun.runner()
-        except Exception as e:
-            print(f'Error {e}')
-    # tdname = f'{os.getcwd()}/funny'
-    # os.makedirs(tdname, exist_ok=True)
-    # try:
-    #     singrun = prepare_runner(tdname, argsin)
-    #     singrun.runner()
-    # except Exception as e:
-    #     print(f'Error {e}')       
+    #     try:
+    #         singrun = prepare_runner(tdname, argsin)
+    #         singrun.runner()
+    #     except Exception as e:
+    #         print(f'Error {e}')
+    tdname = f'{os.getcwd()}/funny1'
+    os.makedirs(tdname, exist_ok=True)
+    try:
+        singrun = prepare_runner(tdname, argsin)
+        singrun.runner()
+    except Exception as e:
+        print(f'Error {e}')       
     
 
 

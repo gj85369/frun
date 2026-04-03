@@ -69,7 +69,7 @@ def get_dict_of_af2_data(pkl_path: Path, map_chain_to_idx: dict):
         if inst in rec_chains:
             ridx.append(map_chain_to_idx[inst])
             rev_map[map_chain_to_idx[inst]] = inst
-        if inst in ant_chains:
+        elif inst in ant_chains:
             aindx.append(map_chain_to_idx[inst])     
             rev_map[map_chain_to_idx[inst]] = inst   
             ptm_outs[inst] = {}

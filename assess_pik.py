@@ -103,7 +103,6 @@ def get_dict_of_af2_data(pkl_path: Path, map_chain_to_idx: dict):
                     ptm_outs[c0][f'{c0}_multimer_confs'].append(data["interfaces"][comb]["multimer_confidence"].item())
         
     
-    print(ptm_outs)
     
     partial_data["filename"] = pkl_path.stem.split(".metrics")[0]
     partial_data["all_ptm"] = data["ptm"].item()

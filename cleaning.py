@@ -25,10 +25,10 @@ class cleaning:
             if fname not in ['FUN']:
                 shutil.copy(inst, f'{self.argsin.output_dir}/{fname}')
         
-        a3ms = glob(f'{self.workdir}/newrun/processed_msas/*/*/*.a3m')
-        for inst in a3ms:
-            alist = inst.split('/')
+        # a3ms = glob(f'{self.workdir}/newrun/processed_msas/*/*/*.a3m')
+        # for inst in a3ms:
+        #     alist = inst.split('/')
             
-            shutil.copy(inst, f'{self.argsin.output_dir}/{alist[-3]}_{alist[-1]}')
+        #     shutil.copy(inst, f'{self.argsin.output_dir}/{alist[-3]}_{alist[-1]}')
             
         

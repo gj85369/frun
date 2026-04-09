@@ -10,7 +10,7 @@ import os
 import tempfile, subprocess
 from pathlib import Path
 from complex_cut import complex_cut
-from sequence_similarity import needleman_wunsch
+#from sequence_similarity import needleman_wunsch
 from ab_det import check_antibody
 from comparing_fastas import compare
 import shutil

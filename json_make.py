@@ -49,7 +49,7 @@ base_seq_entry = {
 def making_json(inseqdic, opm, opdb, ojson, nme=None):
     bj = copy.deepcopy(templatejson)
     if nme:
-        bj['job_name'] = f'{nme}_modded'
+        bj['job_name'] = f'{nme}'
     else:
         bj['job_name'] = 'modded'
     ttj = copy.deepcopy(base_template_json)

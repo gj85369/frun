@@ -158,7 +158,7 @@ class prepare_runner:
     def run_cleaning(self):
         cln = cleaning(self.workdir, self.argsp)
         
-    def runner_single(self):
+    def runner(self):
         os.makedirs(self.argsp.output_dir, exist_ok=True)
         os.makedirs(f'{self.workdir}/msa', exist_ok=True)
         os.makedirs(f'{self.workdir}/ligand', exist_ok=True)

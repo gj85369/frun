@@ -18,6 +18,8 @@ from interaction import interact
 from json_make import making_json
 from cleaning import cleaning
 from glob import glob
+from multiprocessing import Pool
+import copy
 bpath = Path(__file__).parent.resolve()
 
 
@@ -31,25 +33,18 @@ def load_stuff():
 
 
 def main(argsin):
-    with tempfile.TemporaryDirectory() as tdname:
-        cfiles = glob(f'{argsin.complex_dir}/*.pdb')
-        for i in range(0,len(cfiles)):
-            finst = cfiles[i]
-            
-            try:
-                argsin.complex = finst
-                argsin.output_dir = f'{argsin.output_dir}/{i}'
-                singrun = prepare_runner(tdname, argsin)
-                singrun.runner()
-            except Exception as e:
-                print(f'Error {e}')
-    # tdname = f'{os.getcwd()}/funny1'
-    # os.makedirs(tdname, exist_ok=True)
-    # try:
-    #     singrun = prepare_runner(tdname, argsin)
-    #     singrun.runner()
-    # except Exception as e:
-    #     print(f'Error {e}')       
+    cfiles = glob(f'{argsin.complex_dir}/*.pdb')
+    instances = []
+    for i in range(0,len(cfiles)):
+        finst = cfiles[i]
+        
+        argsin.complex = finst
+        argsin.output_dir = f'{argsin.output_dir}/{i}'
+        a1 = copy.deepcopy(argsin)
+        instances.append(prepare_runner(a1))
+    with Pool(processes=6) as p:
+        instances = p.map(run_inst, instances)
+    
     
 
 
@@ -60,9 +55,9 @@ class cleanup:
     
 
 class prepare_runner:
-    def __init__(self, workdir, argsp):
-        self.workdir = workdir
+    def __init__(self,  argsp):
         self.argsp = argsp
+        print(f'running {self.argsp.complex}')
         
     def make_ind_fasta(self, a3m_path, oname, faspas):
         cmd = f'echo ">{oname}" > {faspas}'
@@ -159,18 +154,21 @@ class prepare_runner:
         cln = cleaning(self.workdir, self.argsp)
         
     def runner(self):
-        os.makedirs(self.argsp.output_dir, exist_ok=True)
-        os.makedirs(f'{self.workdir}/msa', exist_ok=True)
-        os.makedirs(f'{self.workdir}/ligand', exist_ok=True)
-        os.makedirs(f'{self.workdir}/fasta', exist_ok=True)
-        os.makedirs(f'{self.workdir}/pdbs', exist_ok=True)
-        self.make_fastas()
-        self.parse_complex()
-        self.compare_fastas()
-        self.make_new_msas()
-        self.run_interaction()
-        self.run_af()
-        self.run_cleaning()
+        with tempfile.TemporaryDirectory() as tdname:
+            self.workdir = tdname
+
+            os.makedirs(self.argsp.output_dir, exist_ok=True)
+            os.makedirs(f'{self.workdir}/msa', exist_ok=True)
+            os.makedirs(f'{self.workdir}/ligand', exist_ok=True)
+            os.makedirs(f'{self.workdir}/fasta', exist_ok=True)
+            os.makedirs(f'{self.workdir}/pdbs', exist_ok=True)
+            self.make_fastas()
+            self.parse_complex()
+            self.compare_fastas()
+            self.make_new_msas()
+            self.run_interaction()
+            self.run_af()
+            self.run_cleaning()
     
 
 

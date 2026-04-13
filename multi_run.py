@@ -60,10 +60,9 @@ class cleanup:
     
 
 class prepare_runner:
-    def __init__(self, workdir, argsp, complex_pdb):
+    def __init__(self, workdir, argsp):
         self.workdir = workdir
         self.argsp = argsp
-        self.compex_pdb = complex_pdb
         
     def make_ind_fasta(self, a3m_path, oname, faspas):
         cmd = f'echo ">{oname}" > {faspas}'

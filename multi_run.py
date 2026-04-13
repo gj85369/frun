@@ -37,10 +37,10 @@ def main(argsin):
     instances = []
     for i in range(0,len(cfiles)):
         finst = cfiles[i]
-        
-        argsin.complex = finst
-        argsin.output_dir = f'{argsin.output_dir}/{i}'
         a1 = copy.deepcopy(argsin)
+        a1.complex = finst
+        a1.output_dir = f'{argsin.output_dir}/{i}'
+        
         instances.append(runhandler(a1))
     with Pool(processes=6) as p:
         instances = p.map(run_inst, instances)

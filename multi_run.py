@@ -41,22 +41,36 @@ def main(argsin):
         argsin.complex = finst
         argsin.output_dir = f'{argsin.output_dir}/{i}'
         a1 = copy.deepcopy(argsin)
-        instances.append(prepare_runner(a1))
+        instances.append(runhandler(a1))
     with Pool(processes=6) as p:
         instances = p.map(run_inst, instances)
     
     
 
 
+class runhandler:
+    def __init__(self, argsin):
+        self.argsin = argsin
     
+    def runner(self):
+        with tempfile.TemporaryDirectory() as tdname:
+            
+            try:
+                singrun = prepare_runner(tdname, self.argsin)
+                singrun.runner()
+            except Exception as e:
+                print(f'Error {e}')
+        
+
 class cleanup:
     def __init__(self, *args, **kwargs):
         pass
     
 
 class prepare_runner:
-    def __init__(self,  argsp):
+    def __init__(self, workdir, argsp):
         self.argsp = argsp
+        self.workdir = workdir
         print(f'running {self.argsp.complex}')
         
     def make_ind_fasta(self, a3m_path, oname, faspas):
@@ -154,22 +168,18 @@ class prepare_runner:
         cln = cleaning(self.workdir, self.argsp)
         
     def runner(self):
-        with tempfile.TemporaryDirectory() as tdname:
-            self.workdir = tdname
-
-            os.makedirs(self.argsp.output_dir, exist_ok=True)
-            os.makedirs(f'{self.workdir}/msa', exist_ok=True)
-            os.makedirs(f'{self.workdir}/ligand', exist_ok=True)
-            os.makedirs(f'{self.workdir}/fasta', exist_ok=True)
-            os.makedirs(f'{self.workdir}/pdbs', exist_ok=True)
-            self.make_fastas()
-            self.parse_complex()
-            self.compare_fastas()
-            self.make_new_msas()
-            self.run_interaction()
-            self.run_af()
-            self.run_cleaning()
-    
+        os.makedirs(self.argsp.output_dir, exist_ok=True)
+        os.makedirs(f'{self.workdir}/msa', exist_ok=True)
+        os.makedirs(f'{self.workdir}/ligand', exist_ok=True)
+        os.makedirs(f'{self.workdir}/fasta', exist_ok=True)
+        os.makedirs(f'{self.workdir}/pdbs', exist_ok=True)
+        self.make_fastas()
+        self.parse_complex()
+        self.compare_fastas()
+        self.make_new_msas()
+        self.run_interaction()
+        self.run_af()
+        self.run_cleaning()
 
 
 

@@ -198,7 +198,6 @@ if __name__ == '__main__':
     parser.add_argument("-s",
                         "--complex",
                         help="The input complex",
-                        required=True,
                         type=Path)    
     parser.add_argument("-o",
                         "--output-dir",

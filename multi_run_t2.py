@@ -26,7 +26,7 @@ def run_inst(inls):
         
         print(cmd)
         cos = os.environ.copy()
-        cos['CUDA_VISIBLE_DEVICES'] = int(gpun)
+        cos['CUDA_VISIBLE_DEVICES'] = str(gpun)
         outlist.append(subprocess.check_output(cmd, shell=True, universal_newlines=True, env=cos))
     return outlist
 

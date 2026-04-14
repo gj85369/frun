@@ -193,6 +193,11 @@ if __name__ == '__main__':
                         help="dir for work and output.",
                         required=True,
                         type=Path)
+    parser.add_argument("-g",
+                        "--gpus",
+                        help="amount of gpus to use.",
+                        default=1,
+                        type=int)       
     args = parser.parse_args()
     if not args.ligand:
         print('ligand msas needed')

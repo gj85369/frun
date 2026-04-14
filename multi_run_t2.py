@@ -8,7 +8,7 @@ Created on Tue Mar 31 10:32:55 2026
 import argparse
 import sys
 import os
-import tempfile, subprocess
+import subprocess
 from pathlib import Path
 #from sequence_similarity import needleman_wunsch
 
@@ -22,9 +22,9 @@ bpath = Path(__file__).parent.resolve()
 def run_inst(inls):
     cmdlist, gpun = inls
     outlist = []
-    for cmd in cmdlist:
-        
-        print(cmd)
+    for cmdl in cmdlist:
+        cmd, fname = cmdl
+        print(f'running complex {fname}')
         cos = os.environ.copy()
         cos['CUDA_VISIBLE_DEVICES'] = str(gpun)
         outlist.append(subprocess.check_output(cmd, shell=True, universal_newlines=True, env=cos))
@@ -56,7 +56,7 @@ def main(argsin):
         vtmp[oind + 1] = f'{vlist[oind+1]}/{fname}'
         tl = pyinst + vtmp
         cid = ret_mod(i, argsin.gpus)
-        instdic[cid].append(' '.join(tl))
+        instdic[cid].append([' '.join(tl), fname])
     
     for i in range(0,int(argsin.gpus)):
         instances.append([instdic[i], str(i)])

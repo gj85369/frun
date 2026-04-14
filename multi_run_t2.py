@@ -19,32 +19,49 @@ bpath = Path(__file__).parent.resolve()
 
 
 
-def run_inst(cmd):
-    print(cmd)
-    outs = subprocess.check_output(cmd, shell=True, universal_newlines=True)
-    return outs
+def run_inst(inls):
+    cmdlist, gpun = inls
+    outlist = []
+    for cmd in cmdlist:
+        
+        print(cmd)
+        cos = os.environ.copy()
+        cos['CUDA_VISIBLE_DEVICES'] = int(gpun)
+        outlist.append(subprocess.check_output(cmd, shell=True, universal_newlines=True, env=cos))
+    return outlist
 
 
+def ret_mod(inint, gpunumber):
+    return inint%gpunumber
 
 def main(argsin):
     cfiles = glob(f'{argsin.complex_dir}/*.pdb')
     pyinst = [sys.executable]
     vlist = copy.deepcopy(sys.argv)
-    vlist[0] = f'{bpath}/complete_run.py'
+    # vlist[0] = f'{bpath}/complete_run.py'    
+    vlist[0] = f'{bpath}/tt.py'
     cind = vlist.index('-c')
     oind = vlist.index('-o')
 
     instances = []
+    instdic = {}
+    for i in range(0,int(argsin.gpus)):
+        instdic[i] = []
+    
     for i in range(0,len(cfiles)):
         finst = cfiles[i]
         vtmp = copy.deepcopy(vlist)
+        fname = finst.split('/')[-1].split('.pdb')[0]
         vtmp[cind + 1] = finst
-        vtmp[oind + 1] = f'{vlist[oind+1]}/{i}'
+        vtmp[oind + 1] = f'{vlist[oind+1]}/{fname}'
         tl = pyinst + vtmp
-        instances.append(' '.join(tl))
+        cid = ret_mod(i, argsin.gpus)
+        instdic[cid].append(' '.join(tl))
+    
+    for i in range(0,int(argsin.gpus)):
+        instances.append([instdic[i], i])
         
-        
-    with Pool(processes=6) as p:
+    with Pool(processes=argsin.gpus) as p:
         instances = p.map(run_inst, instances)
     
     
@@ -82,6 +99,11 @@ if __name__ == '__main__':
                         help="dir for work and output.",
                         required=True,
                         type=Path)
+    parser.add_argument("-g",
+                        "--gpus",
+                        help="amount of gpus to use.",
+                        default=1,
+                        type=int)    
     args = parser.parse_args()
     if not args.ligand:
         print('ligand msas needed')

@@ -59,7 +59,7 @@ def main(argsin):
         instdic[cid].append(' '.join(tl))
     
     for i in range(0,int(argsin.gpus)):
-        instances.append([instdic[i], i])
+        instances.append([instdic[i], str(i)])
         
     with Pool(processes=argsin.gpus) as p:
         instances = p.map(run_inst, instances)

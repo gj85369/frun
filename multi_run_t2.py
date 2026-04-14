@@ -38,8 +38,8 @@ def main(argsin):
     cfiles = glob(f'{argsin.complex_dir}/*.pdb')
     pyinst = [sys.executable]
     vlist = copy.deepcopy(sys.argv)
-    # vlist[0] = f'{bpath}/complete_run.py'    
-    vlist[0] = f'{bpath}/tt.py'
+    vlist[0] = f'{bpath}/complete_run.py'    
+    # vlist[0] = f'{bpath}/tt.py'
     cind = vlist.index('-c')
     oind = vlist.index('-o')
 

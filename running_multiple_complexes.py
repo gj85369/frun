@@ -39,7 +39,6 @@ def main(argsin):
     pyinst = [sys.executable]
     vlist = copy.deepcopy(sys.argv)
     vlist[0] = f'{bpath}/complete_run.py'    
-    # vlist[0] = f'{bpath}/tt.py'
     cind = vlist.index('-c')
     oind = vlist.index('-o')
 
@@ -50,6 +49,7 @@ def main(argsin):
     
     for i in range(0,len(cfiles)):
         finst = cfiles[i]
+        print(f'running {finst}')
         vtmp = copy.deepcopy(vlist)
         fname = finst.split('/')[-1].split('.pdb')[0]
         vtmp[cind + 1] = finst

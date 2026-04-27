@@ -130,7 +130,7 @@ class prepare_runner:
         cln = cleaning(self.workdir, self.argsp)
         
     def runner(self):
-        odir = self.argsp.output_dir
+        odir = self.argsp.odirfull
         if not odir.is_dir():
             odir.mkdir()
         os.makedirs(f'{self.workdir}/msa', exist_ok=True)
@@ -196,5 +196,5 @@ if __name__ == '__main__':
             quit()        
     
             
-        
+    args.odirfull = args.output_dir.absolute()
     main(args)

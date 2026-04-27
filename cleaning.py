@@ -23,7 +23,7 @@ class cleaning:
         for inst in files:
             fname = inst.split('/')[-1]
             if fname not in ['FUN']:
-                shutil.copy(inst, f'{self.argsin.output_dir}/{fname}')
+                shutil.copy(inst, f'{self.argsin.output_dir.absolute()}/{fname}')
         
         # a3ms = glob(f'{self.workdir}/newrun/processed_msas/*/*/*.a3m')
         # for inst in a3ms:

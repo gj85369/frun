@@ -10,7 +10,6 @@ import os
 import tempfile, subprocess
 from pathlib import Path
 from complex_cut import complex_cut
-#from sequence_similarity import needleman_wunsch
 from ab_det import check_antibody
 from comparing_fastas import compare
 import shutil
@@ -33,20 +32,10 @@ def main(argsin):
             singrun.runner()
         except Exception as e:
             print(f'Error {e}')
-    # tdname = f'{os.getcwd()}/funny1'
-    # os.makedirs(tdname, exist_ok=True)
-    # try:
-    #     singrun = prepare_runner(tdname, argsin)
-    #     singrun.runner()
-    # except Exception as e:
-    #     print(f'Error {e}')       
     
 
 
     
-class cleanup:
-    def __init__(self, *args, **kwargs):
-        pass
     
 
 class prepare_runner:
@@ -59,15 +48,8 @@ class prepare_runner:
         subprocess.run(cmd, shell=True)
         cmd = f'head -n 2 {a3m_path} | tail -n 1 >> {faspas}'
         subprocess.run(cmd, shell=True)
-        #cmd = f'cat {faspas}'
-        #subprocess.run(cmd, shell=True)
-        #cmd = f'ls -ltr {faspas}'
-        #subprocess.run(cmd, shell=True)        
     def make_fastas(self):
         
-        ###   THIS NEEDS TO CHANGE - run parse complex first then assign chain names after, then move msas
-        #self.make_ind_fasta(self.argsp.receptor, 'rec', f'{self.workdir}/fasta/rec.fasta')
-        #self.rec_fasta = f'{self.workdir}/fasta/rec.fasta'
         self.rec_dic = {}
         if len(self.argsp.receptor) > 4:
             print('receptor limit hard coded to 4 search this text to change')
@@ -93,7 +75,6 @@ class prepare_runner:
                 print(f'ligand is supposed to be antibody {self.argsp.ligand[i]} does not match antibody')
                 quit()
             else:
-                #print(f'{self.argsp.ligand[i]} is an antibody chain {opt[1]}')
                 self.lig_dic[i]['chain_name'] = None
             
 
@@ -149,7 +130,9 @@ class prepare_runner:
         cln = cleaning(self.workdir, self.argsp)
         
     def runner(self):
-        os.makedirs(self.argsp.output_dir, exist_ok=True)
+        odir = self.argsp.output_dir
+        if not odir.is_dir():
+            odir.ok.mkdir()
         os.makedirs(f'{self.workdir}/msa', exist_ok=True)
         os.makedirs(f'{self.workdir}/ligand', exist_ok=True)
         os.makedirs(f'{self.workdir}/fasta', exist_ok=True)

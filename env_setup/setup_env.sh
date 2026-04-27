@@ -22,7 +22,7 @@ then
 fi 
 
 
-source actitvate base
+source activate base
 conda activate alphafold2_env
 mkdir databases
 

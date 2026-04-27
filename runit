@@ -1,11 +1,13 @@
 #!/bin/bash
 
+script_dir=$(dirname "$(readlink -f "$0")")
+
 bcd=$(pwd)
 
 cd af_run
-export ALPHAFOLD_MULTIMER_PATH=/venv/alphafold2_env/lib/python3.11/site-packages/alphafold
-export ALPHAFOLD_PARAMS_PATH=/workspace/databases/
-/venv/alphafold2_env/bin/python /workspace/env_setup/frun/af2_wrapper/run_af2.py job.json &> FUN
+export ALPHAFOLD_MULTIMER_PATH=PATHTOALPHAFOLDDIR
+export ALPHAFOLD_PARAMS_PATH=PATHTOPARAMSDIR
+PATHTOENVDIR/bin/python $script_dir/af2_wrapper/run_af2.py job.json &> FUN
 mkdir fet
 mv feature* fet/
 
@@ -15,10 +17,10 @@ mkdir IPSAE
 cd IPSAE
 opdb=$(ls ../af_run/*.pdb)
 ojs=$(ls ../af_run/*metrics.json)
-python /workspace/env_setup/frun/IPSAE/ipsae.py $ojs $opdb 15 15 
+python $script_dir/IPSAE/ipsae.py $ojs $opdb 15 15 
 
 cd $bcd
 mkdir aftest
 cd aftest 
-python /workspace/env_setup/frun/assess_pik.py --target-dir ${bcd}/af_run --input-json ${bcd}/af_run/job.json
+python $script_dir/assess_pik.py --target-dir ${bcd}/af_run --input-json ${bcd}/af_run/job.json
 

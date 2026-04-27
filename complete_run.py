@@ -132,7 +132,7 @@ class prepare_runner:
     def runner(self):
         odir = self.argsp.output_dir
         if not odir.is_dir():
-            odir.ok.mkdir()
+            odir.mkdir()
         os.makedirs(f'{self.workdir}/msa', exist_ok=True)
         os.makedirs(f'{self.workdir}/ligand', exist_ok=True)
         os.makedirs(f'{self.workdir}/fasta', exist_ok=True)

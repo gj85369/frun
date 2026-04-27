@@ -2,10 +2,12 @@ name: alphafold2_env
 channels:
     - conda-forge
     - phenix-project
+    - bioconda
 dependencies:
     - python=3.11
     - cudatoolkit=11.8
     - pdbfixer
+    - anarci
     - aria2
     - pip
     - pip:

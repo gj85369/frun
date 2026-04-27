@@ -45,5 +45,5 @@ fi
 sed -i "s@PATHTOENVDIR@$CONDA_PREFIX@g" ../runit
 sed -i "s@PATHTOALPHAFOLDDIR@$CONDA_PREFIX/lib/python3.11/site-packages/alphafold@g" ../runit
 sed -i "s@PATHTOPARAMSDIR@$cdir/databases@g" ../runit
-
+sed -i "s@ANARCIPATH@$CONDA_PREFIX/bin/ANARCI@g" ../ab_det.py
 

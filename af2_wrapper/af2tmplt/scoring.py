@@ -169,11 +169,8 @@ def get_confidence_metrics(prediction_result, multimer_mode=True):
             breaks=prediction_result['predicted_aligned_error']['breaks'])
         # Save raw pae to dump it to file later
         confidence_metrics['raw_pae'] = prediction_result['predicted_aligned_error']
-        print('fuck1')
 
         if num_chains > 1: #multimer_mode:
-            print('fuck2')
-            print(global_var.ASYM_IDs)
             mask_interchain = global_var.ASYM_IDs[:, None] != global_var.ASYM_IDs[None, :]
             atom_positions = prediction_result['structure_module']['final_atom_positions']
             atom_masks = prediction_result['structure_module']['final_atom_mask']
@@ -193,7 +190,6 @@ def get_confidence_metrics(prediction_result, multimer_mode=True):
                 0.8 * confidence_metrics['iptm'] + 0.2 * confidence_metrics['ptm'])
 
             asym_id_set = sorted(list(set(global_var.ASYM_IDs)))
-            print(f'asym ids YAYAY {asym_id_set}')
             interfaces = {}
             for i, chain1 in enumerate(asym_id_set):
                 resi_i = (global_var.ASYM_IDs==chain1)

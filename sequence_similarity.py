@@ -10,7 +10,9 @@ from itertools import product
 from collections import deque
 
 
-def needleman_wunsch(x, y):
+def needleman_wunsch(px, py):
+    x = px.strip()
+    y = py.strip()
     N, M = len(x), len(y)
     s = lambda a, b: int(a == b)
 

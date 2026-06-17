@@ -104,11 +104,19 @@ class prepare_runner:
         os.makedirs(f'{self.workdir}/newrun/processed_templates')
         os.makedirs(f'{self.workdir}/newrun/processed_msas')
         os.makedirs(f'{self.workdir}/newrun/af_run')
+        tlig = {}
+        for inst in list(self.lig_dic.keys()):
+            tlig[inst] = {}
+            tlig[inst]['chain_name'] = self.lig_dic[inst]['chain_name']
+        trec = {}
+        for inst in list(self.rec_dic.keys()):
+            trec[inst] = {}
+            trec[inst]['chain_name'] = self.rec_dic[inst]['chain_name']            
         with open(f'{self.workdir}/newrun/ligdic.json', 'w') as f:
-            json.dump(self.lig_dic, f)
+            json.dump(tlig, f)
         f.close()
         with open(f'{self.workdir}/newrun/recdic.json', 'w') as f:
-            json.dump(self.rec_dic, f)
+            json.dump(trec, f)
         f.close()        
         intout = interact(self.incomplex.recpdb, 
                           self.incomplex.ligpdb, 

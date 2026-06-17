@@ -25,11 +25,11 @@ class complex_cut:
         self.h_int = 0
 
     def sel_name(self, tres):
-        if res[1] == 'H':
+        if tres[1] == 'H':
             tnm = self.hch[self.h_int]
             self.h_int += 1
             return tnm
-        if res[1] == 'L':
+        if tres[1] == 'L':
             tnm = self.lch[self.l_int]
             self.l_int += 1
             return tnm
@@ -44,8 +44,9 @@ class complex_cut:
             res = check_antibody(self.fas_dic[inst])
             if res[0] == True:
                 self.ligand_chains.append(inst)
-                self.chdic[inst] = self.sel_name(res)
-                self.nfas_dic[res[1]] = ''.join(self.prot.fas_seq[inst])
+                achnm = self.sel_name(res)
+                self.chdic[inst] = achnm
+                self.nfas_dic[achnm] = ''.join(self.prot.fas_seq[inst])
             else:
                 self.receptor_chains.append(inst)
                 self.chdic[inst] = rch[rint]

@@ -18,11 +18,12 @@ class complex_cut:
         self.receptor_chains = []
         self.ligand_chains = []
         self.nfas_dic = {}
-        self.runner()
         self.lch = 'LMNO'
         self.hch = 'HIJK'
         self.l_int = 0
-        self.h_int = 0
+        self.h_int = 0        
+        self.runner()
+
 
     def sel_name(self, tres):
         if tres[1] == 'H':

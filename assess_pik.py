@@ -45,12 +45,23 @@ def get_map_chain_to_idx(input_json: Path):
         map_chain_to_idx[chain] = i
     return map_chain_to_idx
 
+def get_chains(json_path: Path):
+    with open(f'{json_path}/ligdic.json', 'r') as f:
+        ltd = json.load(f)
+    f.close()
+    with open(f'{json_path}/recdic.json', 'r') as f:
+        rtd = json.load(f)
+    f.close()    
+    print(ltd)
+    print(rtd)
+    
+    
 
 def get_dict_of_af2_data(pkl_path: Path, map_chain_to_idx: dict):
     # get all the data
     partial_data = {}
     data = get_dict_from_pkl(pkl_path)
-
+    get_chains(pkl_path.parent.parent)
     # get all combinations
     all_combinations = []
     for i in range(1, len(map_chain_to_idx) + 1):
@@ -61,6 +72,7 @@ def get_dict_of_af2_data(pkl_path: Path, map_chain_to_idx: dict):
     # Get Antibody-antigen-data
     rec_chains = list('ABCDEFG')
     ant_chains = list('HIJKLMNOPQRSTUVWXYZ')
+    
     aindx = []
     ridx = []
     rev_map = {}

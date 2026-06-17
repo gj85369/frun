@@ -5,7 +5,7 @@ Created on Tue Mar 31 10:32:55 2026
 
 @author: g4code
 """
-import argparse
+import argparse, json
 import os
 import tempfile, subprocess
 from pathlib import Path
@@ -104,7 +104,12 @@ class prepare_runner:
         os.makedirs(f'{self.workdir}/newrun/processed_templates')
         os.makedirs(f'{self.workdir}/newrun/processed_msas')
         os.makedirs(f'{self.workdir}/newrun/af_run')
-        
+        with open(f'{self.workdir}/newrun/ligdic.json', 'w') as f:
+            json.dump(self.lig_dic, f)
+        f.close()
+        with open(f'{self.workdir}/newrun/recdic.json', 'w') as f:
+            json.dump(self.rec_dic, f)
+        f.close()        
         intout = interact(self.incomplex.recpdb, 
                           self.incomplex.ligpdb, 
                           f'{self.workdir}/newrun/processed_templates/temp.pdb', 

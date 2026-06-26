@@ -95,6 +95,7 @@ def get_dict_of_af2_data(pkl_path: Path, map_chain_to_idx: dict):
         ptm_outs[inst][f'{inst}_ptms'] = []
         ptm_outs[inst][f'{inst}_iptms'] = []
         ptm_outs[inst][f'{inst}_multimer_confs'] = []
+      
     ct = 0
     for comb in all_combinations:
         if comb[1] in aindx:
@@ -120,7 +121,9 @@ def get_dict_of_af2_data(pkl_path: Path, map_chain_to_idx: dict):
     partial_data["all_ptm"] = data["ptm"].item()
     partial_data["all_iptm"] = data["iptm"].item()
     partial_data["all_multimer_confidence"] = data["multimer_confidence"].item()    
-    
+    partial_data["reclig_ptm"] = 0
+    partial_data["reclig_iptm"] = 0
+    partial_data["reclig_multimer_confidence"] = 0    
     for inst in list(ptm_outs.keys()):
         td = ptm_outs[inst]
         partial_data[f"{inst}_ptm"] = np.array(td[f'{inst}_ptms']).mean()
@@ -132,8 +135,11 @@ def get_dict_of_af2_data(pkl_path: Path, map_chain_to_idx: dict):
         for i in range(1,len(list(pch))):
             for j in range(0,i):
                 partial_data[f"{pch[i].upper()}-{pch[j].upper()}_ptm"] = (partial_data[f"{pch[i]}_ptm"] + partial_data[f"{pch[j]}_ptm"])/2
+                partial_data['reclig_ptm'] += partial_data[f"{pch[i].upper()}-{pch[j].upper()}_ptm"]
                 partial_data[f"{pch[i].upper()}-{pch[j].upper()}_iptm"] = (partial_data[f"{pch[i]}_iptm"] + partial_data[f"{pch[j]}_iptm"])/2
+                partial_data['reclig_iptm'] += partial_data[f"{pch[i].upper()}-{pch[j].upper()}_iptm"]
                 partial_data[f"{pch[i].upper()}-{pch[j].upper()}_multimer_confidence"] = (partial_data[f"{pch[i]}_multimer_confidence"] + partial_data[f"{pch[j]}_multimer_confidence"])/2
+                partial_data['reclig_multimer_confidence'] += partial_data[f"{pch[i].upper()}-{pch[j].upper()}_multimer_confidence"]
     return partial_data
                 
 
